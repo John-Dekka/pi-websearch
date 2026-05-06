@@ -1,0 +1,12 @@
+{
+  "name": "pi-websearch",
+  "version": "0.1.0",
+  "description": "Web search extension for pi - supports Exa API and DuckDuckGo fallback",
+  "keywords": ["pi-package", "pi", "extension", "websearch", "search"],
+  "pi": {
+    "extensions": ["./websearch.ts"]
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-coding-agent": "*"
+  }
+}
