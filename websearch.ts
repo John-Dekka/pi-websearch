@@ -173,10 +173,22 @@ export default function webSearchExtension(pi: ExtensionAPI) {
 	pi.registerTool({
 		name: "websearch",
 		label: "Web Search",
-		description: "Search the web for relevant information. Returns results with titles, URLs, and snippets. Use this for finding current information, researching topics, or gathering information beyond the training data cutoff.",
+		description: "Search the web using Exa (semantic search engine). Returns relevant results with titles, URLs, and content highlights. Use for finding current information, researching topics, or gathering info beyond the training data cutoff.",
+
+		// IMPORTANT: Exa is semantic-first, not keyword-based. Write natural-language questions that describe what you need, not keyword dumps.
+		// Good: \"How do I fix PostgreSQL deadlocks with SELECT FOR UPDATE in Go?\"
+		// Bad:   \"PostgreSQL deadlock error 40P01 fix\"
+		// Include context (language, framework, specific errors) for best results. Write like you're asking a human on StackOverflow.
+
 		parameters: Type.Object({
-			query: Type.String({ description: "The search query" }),
-			numResults: Type.Optional(Type.Number({ description: "Number of results to return (default: 5, max: 20)" })),
+			query: Type.String({
+				description:
+				"Natural-language search query. Exa is semantic-first: write complete questions describing what you need, include language/framework context and specific errors when relevant. Avoid bare keyword lists or overly short queries.\n"
+				+ "Good: 'How do I fix PostgreSQL deadlocks with SELECT FOR UPDATE in Go?'\n"
+				+ "Bad:    'PostgreSQL deadlock error 40P01 fix'\n"
+				+ "Write like you're asking a human on StackOverflow.",
+			}),
+			numResults: Type.Optional(Type.Number({ description: "Number of results to return (default: 5, max: 20). Start with 5; increase only if you need more coverage." })),
 		}),
 
 		async execute(_toolCallId, params, signal, _onUpdate, ctx) {
